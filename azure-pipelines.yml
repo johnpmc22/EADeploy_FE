@@ -1,21 +1,31 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
-trigger:
-- master
-
 pool:
-  vmImage: 'Ubuntu-16.04'
+  name: Hosted Ubuntu 1604
+variables:
+  imageName: 'nodejs-server'
+  version: 'latest'
 
 steps:
-- task: NodeTool@0
+- task: Docker@1
+  displayName: 'Build an Image'
   inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+    azureSubscriptionEndpoint: 'Free Trial (116880b6-281d-4a55-8e99-82cce51e6f41)'
+    azureContainerRegistry: johnmcacr.azurecr.io
+    imageName: '$(imageName):$(version)'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+- task: Docker@1
+  displayName: 'Push an Image'
+  inputs:
+    azureSubscriptionEndpoint: 'Free Trial (116880b6-281d-4a55-8e99-82cce51e6f41)'
+    azureContainerRegistry: johnmcacr.azurecr.io
+    command: 'Push an image'
+    imageName: '$(imageName):$(version)'
+
+- script: 'sed -s ''s/nodejs-server:latest/$(imageName):$(version)/g' create-nodejs-service-manifest.yaml'
+  displayName: 'Command Line Script'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop YAML'
+  inputs:
+    PathtoPublish: 'create-nodejs-service-manifest.yaml'
+    ArtifactName: YAML
+
