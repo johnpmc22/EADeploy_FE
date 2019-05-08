@@ -25,7 +25,8 @@ spec:
         image: johnmcacr.azurecr.io/nodejs-server:latest
         securityContext:
           runAsNonRoot: true
-          readOnlyRootFilesystem: true
+          # Container does not start with below set to true
+          # readOnlyRootFilesystem: true
         livenessProbe:
           httpGet:
             path: /healthy
