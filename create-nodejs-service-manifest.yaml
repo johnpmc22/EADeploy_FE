@@ -23,8 +23,8 @@ spec:
       containers:
       - name: node
         image: johnmcacr.azurecr.io/nodejs-server:latest
-        securityContext:
-          runAsNonRoot: true
+        #securityContext:
+        #  runAsNonRoot: true
           # Container does not start with below set to true
           # readOnlyRootFilesystem: true
         livenessProbe:
