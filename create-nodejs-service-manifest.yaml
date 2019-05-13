@@ -27,27 +27,28 @@ spec:
         #  runAsNonRoot: true
           # Container does not start with below set to true
           # readOnlyRootFilesystem: true
-          #livenessProbe:
-          #httpGet:
-          # path: /healthy
-          # port: 22137
-          #initialDelaySeconds: 10
-          #timeoutSeconds: 1
-          #periodSeconds: 10
-          #failureThreshold: 3
-          #readinessProbe:
-          #httpGet:
-          # path: /ready
-          # port: 22137
-          #periodSeconds: 2
-          #initialDelaySeconds: 0
-          #failureThreshold: 3
-          #successThreshold: 1
-        # container opens port 22137
+	livenessProbe:
+          httpGet:
+            path: /healthy
+            port: 22137
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 22137
+          periodSeconds: 2
+          initialDelaySeconds: 0
+          failureThreshold: 3
+          successThreshold: 1
         ports:
         - containerPort: 22137
           name: http
           protocol: TCP            
+        # container opens port 22137
+
 ---
 apiVersion: v1
 kind: Service
