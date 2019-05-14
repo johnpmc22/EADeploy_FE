@@ -28,4 +28,3 @@ steps:
   inputs:
     PathtoPublish: 'create-nodejs-service-manifest.yaml'
     ArtifactName: YAML
-
